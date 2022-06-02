@@ -22,6 +22,7 @@
       >
         <v-card-text>
           <v-autocomplete
+            id="autocomplete-input"
             v-model="location"
             :items="items"
             :loading="isLoading"

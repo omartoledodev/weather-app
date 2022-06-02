@@ -103,7 +103,7 @@ export default {
 
 <style>
 .theme--dark.v-btn-toggle:not(.v-btn-toggle--group) {
-    background: transparent;
+    background: transparent !important;
     color: #FFFFFF;
 }
 </style>

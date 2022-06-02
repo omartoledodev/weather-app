@@ -28,6 +28,7 @@
               <v-btn
                 icon
                 v-bind="attrs"
+                class="btn-menu"
                 v-on="on"
               >
                 <v-icon>mdi-dots-vertical</v-icon>
@@ -36,7 +37,7 @@
 
             <v-list>
               <v-list-item to="/manage-locations">
-                <v-list-item-title>Manage Locations</v-list-item-title>
+                <v-list-item-title  class="item-manage-locations">Manage Locations</v-list-item-title>
               </v-list-item>
             </v-list>
           </v-menu>

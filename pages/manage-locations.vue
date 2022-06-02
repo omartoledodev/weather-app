@@ -15,7 +15,7 @@
 
         <v-spacer />
 
-        <v-btn icon @click="addLocation">
+        <v-btn icon class="btn-add" @click="addLocation">
           <v-icon>mdi-plus</v-icon>
         </v-btn>
       </v-toolbar>
