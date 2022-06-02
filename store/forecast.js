@@ -7,15 +7,22 @@ export const state = () => ({
 export const mutations = {
   loadForecast (state, data) {
     state.forecast.push(data)
+  },
+  removeForecast (state, location) {
+    const index = state.forecast.findIndex(item => item.location.name === location)
+    if (index !== -1) {
+      state.forecast.splice(index, 1)
+    }
   }
 }
 
 export const actions = {
   async getForecast (state, params) {
-    console.log(params)
     const response = await forecastWeather(params.location)
-    console.log(response)
     state.commit('loadForecast', response.body.response)
+  },
+  deleteForecast (state, params) {
+    state.commit('removeForecast', params.location)
   }
 }
 

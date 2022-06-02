@@ -37,10 +37,14 @@ export default {
       return this.$store.getters['weather/getLoading']
     }
   },
+  mounted () {
+    this.location = this.currentLocation
+  },
   methods: {
     async changeLocation () {
       await this.$store.dispatch('locations/getLocation', { location: this.location })
       await this.$store.dispatch('weather/getCode', { location: this.location })
+      await this.$store.dispatch('weather/getIsDay', { location: this.location })
     }
   }
 }

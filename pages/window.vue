@@ -37,7 +37,7 @@
         width="100%"
         color="transparent"
       >
-         <SelectLocation />
+        <SelectLocation />
         <Current />
         <v-divider />
         <History />
@@ -58,7 +58,7 @@ import Current from '../components/Current'
 import History from '../components/HistoryWeather'
 import Forecast from '../components/Forecast'
 
-import { background } from '../const'
+import { backgroundDay, backgroundNight } from '../const'
 
 export default {
   name: 'TemplateWindow',
@@ -83,20 +83,26 @@ export default {
     code () {
       return this.$store.getters['weather/getCodeBackgroud']
     },
+    isDay () {
+      return this.$store.getters['weather/getIsDay']
+    },
     backgroundUrl () {
-      return background.find(item => item.code === this.$store.getters['weather/getCodeBackgroud']).img
+      if (this.isDay === 1) {
+        return backgroundDay.find(item => item.code === this.$store.getters['weather/getCodeBackgroud']).img
+      } else {
+        return backgroundNight.find(item => item.code === this.$store.getters['weather/getCodeBackgroud']).img
+      }
     },
     loadingComponets () {
       return this.$store.getters['weather/getLoading']
     }
   },
   mounted () {
-    console.log(process.env.TEST_VARIABLE)
     if (this.location != null) {
-      console.log('mounted')
       this.$store.dispatch('weather/getLoading', { value: true })
       this.$store.dispatch('weather/getCode', { location: this.location })
-      this.codeBackground = background.find(item => item.code === this.$store.getters['weather/getCodeBackgroud']).img
+      this.$store.dispatch('weather/getIsDay', { location: this.location })
+      this.codeBackground = backgroundDay.find(item => item.code === this.$store.getters['weather/getCodeBackgroud']).img
     } else {
       // Buscar ip and location with API ip
       this.getIp()
@@ -106,24 +112,23 @@ export default {
   methods: {
     async getIp () {
       const response = await getIp()
-      console.log(response)
       if (response.status === 200) {
         // find location by ip
         const location = await getLocationByIp(response.body.ip)
-        console.log(location)
         if (location.status === 200) {
-          console.log(location.body.response.city)
           await this.$store.dispatch('locations/getLocations', { location: location.body.response.city })
           await this.$store.dispatch('locations/getLocation', { location: location.body.response.city })
           await this.$store.dispatch('weather/getWeathers', { location: location.body.response.city })
           await this.$store.dispatch('weather/getCode', { location: location.body.response.city })
+          await this.$store.dispatch('weather/getIsDay', { location: location.body.response.city })
           await this.$store.dispatch('history/getHistory', { location: location.body.response.city })
           await this.$store.dispatch('forecast/getForecast', { location: location.body.response.city })
           this.$store.dispatch('weather/getLoading', { value: true })
-          this.codeBackground = background.find(item => item.code === this.$store.getters['weather/getCodeBackgroud']).img
+          this.codeBackground = backgroundDay.find(item => item.code === this.$store.getters['weather/getCodeBackgroud']).img
         }
       } else {
         // redirect to add locations view
+        this.$router.push('/add-location')
       }
     }
   }

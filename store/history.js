@@ -15,6 +15,12 @@ export const mutations = {
   },
   loadForecast (state, data) {
     state.forecast.push(data)
+  },
+  removeHistory (state, location) {
+    const index = state.history.findIndex(item => item.location.name === location)
+    if (index !== -1) {
+      state.history.splice(index, 1)
+    }
   }
 }
 
@@ -25,6 +31,9 @@ export const actions = {
     const response = await historyWeather(params.location, dt, endDt)
     state.commit('loadLocation', response.body.response.location)
     state.commit('loadHistory', response.body.response)
+  },
+  deleteHistory (state, params) {
+    state.commit('removeHistory', params.location)
   }
 }
 

@@ -67,10 +67,8 @@ export default {
     search (val) {
       this.isLoading = true
       if (val.length >= 3) {
-        console.log(val.length)
         autocompleteLocations(val)
           .then((response) => {
-            console.log(response)
             const { locations } = response.body
             this.count = locations.length
             this.entries = locations
@@ -84,13 +82,12 @@ export default {
   },
   methods: {
     async addLocation () {
-      console.log(this.location)
       await this.$store.dispatch('locations/getLocations', { location: this.location })
       await this.$store.dispatch('locations/getLocation', { location: this.location })
       await this.$store.dispatch('weather/getWeathers', { location: this.location })
       await this.$store.dispatch('history/getHistory', { location: this.location })
       await this.$store.dispatch('forecast/getForecast', { location: this.location })
-      this.$router.push('/window')
+      this.$router.push('/')
     }
   }
 }

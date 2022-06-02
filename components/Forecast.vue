@@ -45,7 +45,6 @@ export default {
     },
     forecast () {
       const forecast = this.$store.getters['forecast/getForecast'].filter(item => item.location.name === this.$store.getters['locations/getLocation'])[0]
-      console.log(forecast)
       const days = forecast.forecast.forecastday
       return days
     },
